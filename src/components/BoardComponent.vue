@@ -1,6 +1,6 @@
 <script setup>
 import SquareComponent from './SquareComponent.vue'
-import {reactive} from "vue";
+import {onUpdated, reactive} from "vue";
 
 const board = reactive({
   squares: Array(9).fill(null),
@@ -8,6 +8,16 @@ const board = reactive({
   winner: null,
   status: 'Next player: X',
 });
+
+onUpdated(() => {
+  if (board.winner) {
+    board.status = `Winner: ${board.winner}`;
+  } else if (board.squares.includes(null)) {
+    board.status = `Next player: ${board.isNextX ? 'X' : 'O'}`;
+  } else {
+    board.status = 'Draw';
+  }
+})
 
 const handleClick = (i) => {
   if (calculateWinner(board.squares) || board.squares[i]) {
@@ -31,9 +41,6 @@ const calculateWinner = (squares) => {
     [0, 4, 8],
     [2, 4, 6],
   ];
-  if (squares.every(square => square)) {
-    return 'Draw';
-  }
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
