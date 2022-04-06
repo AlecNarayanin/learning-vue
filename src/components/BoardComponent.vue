@@ -20,7 +20,7 @@ onUpdated(() => {
 })
 
 const handleClick = (i) => {
-  if (calculateWinner(board.squares) || board.squares[i]) {
+  if (calculateWinner() || board.squares[i]) {
     return;
   }
 
@@ -30,7 +30,7 @@ const handleClick = (i) => {
   board.winner = calculateWinner(board.squares);
 }
 
-const calculateWinner = (squares) => {
+const calculateWinner = () => {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -43,8 +43,8 @@ const calculateWinner = (squares) => {
   ];
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+    if (board.squares[a] && board.squares[a] === board.squares[b] && board.squares[a] === board.squares[c]) {
+      return board.squares[a];
     }
   }
   return null;
